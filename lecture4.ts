@@ -79,25 +79,25 @@
 
 */
 
-let p2 = new Promise((resolve, reject) => {
+// let p2 = new Promise((resolve, reject) => {
 
-    console.log("Inside the executor function");
-    setTimeout(()=>{
-        console.log("setTimeout is done");
-    }, 3000);
-    console.log("End of executor function");
+//     console.log("Inside the executor function");
+//     setTimeout(()=>{
+//         console.log("setTimeout is done");
+//     }, 3000);
+//     console.log("End of executor function");
 
-    reject("Promised task failed");
-});
+//     reject("Promised task failed");
+// });
 
-p2.then((v)=>{
-    console.log(v);
-}).catch((e)=>{
-    console.log(e);
-});
+// p2.then((v)=>{
+//     console.log(v);
+// }).catch((e)=>{
+//     console.log(e);
+// });
 
 
-console.log("After the promise is resolved");
+// console.log("After the promise is resolved");
 
 /* Output:
     
@@ -111,3 +111,118 @@ console.log("After the promise is resolved");
         it is a callback function and so is setTimeout. They will be places in the message queue and executed after the main code is executed.
     
 */
+
+// function download(url: string) {
+    
+//     let p1 = new Promise((resolve, reject) => {
+//         console.log("Inside the executor function");
+    
+//         let r:number = Math.floor(Math.random()*100); //random number between 0 and 100
+//         if(r%2==0)
+//             resolve(r);
+//         else
+//             reject(r);
+//     });
+
+//     return p1;
+
+// }
+
+// let prom = download('file.txt');
+// prom.then((v)=>{
+//     console.log("File downloaded successfully. File size is: "+v);
+// }).catch((e)=>{
+//     console.log("File download failed. Size was: "+e);
+// });
+
+// console.log("Executing regardless of the download promise being resolved or rejected.");
+
+/* Potential Output:
+
+    Inside the executor function
+    Executing regardless of the download promise being resolved or rejected.
+    File downloaded successfully. File size is: 76
+
+    OR
+
+    Inside the executor function
+    Executing regardless of the download promise being resolved or rejected.
+    File download failed. Size was: 73
+
+
+*/
+
+
+//LETS ADD MULTIPLE CALLBACKS TO THE PROMISE
+
+function download (url: string)
+{
+
+    let p = new Promise((resolve, reject) => {
+        console.log("Downloading file from: "+url);
+
+        setTimeout(()=>
+        {
+            let r:number = Math.floor(Math.random()*100); //random number between 0 and 100
+
+            if(r%2==0)
+                resolve(r);
+            else
+                reject(r);
+
+        }, 3000);
+    });
+
+    return p;
+
+}
+
+let prom = download('file.txt');
+prom.then((v)=>{
+    console.log("File downloaded successfully. File size is: "+v);
+}).catch((e)=>{
+    console.log("File download failed. Size was: "+e);
+});
+
+/* Potential Output:
+
+    Downloading file from: file.txt
+    File download failed. Size was: 73
+
+    OR
+
+    Downloading file from: file.txt
+    File downloaded successfully. File size is: 76
+
+*/
+
+/* A promise has states:
+
+    1. Pending: initial state, neither resolved nor rejected.
+    2. Settled: the promise is either resolved or rejected.
+
+*/
+
+//We can use multiple .then() to handle the promise.
+//Why do this? Perhaps there may be multiple tasks that need to be done after the promise is resolved. One after the other.
+
+prom.then((v)=>{
+    console.log("Then2 resolved");
+}).catch((e)=>{
+    console.log("Then2 rejected");
+});
+
+// .finally() is used to execute code regardless of the promise being resolved or rejected.
+// can be chained with .then() and .catch()
+
+prom.then((v)=>{
+    console.log("Then3 resolved");
+}).catch((e)=>{
+    console.log("Then3 rejected");
+}).finally(()=>{
+    console.log("Finally is executed");
+});
+
+//One last thing: The .then block itself returns a promise. So we can chain .then() blocks.
+
+//example: prom.then((v)=>{console.log("Then3 resolved") return v;}).then((v)=>{console.log("Then4 resolved") return v;})
