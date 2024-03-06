@@ -147,12 +147,12 @@ undefined because the first then doesn't return anything for the second then to 
 
 */
 
-p4.then((data:number[])=>{
-    console.log("Then1: ", data);
-    let updatedData = data.map((value:number)=>value*2);
-    return updatedData;
-})
-.then((data:number[])=> console.log("Then2: ", data));
+// p4.then((data:number[])=>{
+//     console.log("Then1: ", data);
+//     let updatedData = data.map((value:number)=>value*2);
+//     return updatedData;
+// })
+// .then((data:number[])=> console.log("Then2: ", data));
 
 //"<--------------- END OF SECTION ----------------->"
 
@@ -164,7 +164,7 @@ Await is used to wait for a promise to resolve or reject. It can only be used in
 
 */
 
-console.log("ASYNC AWAIT SECTION");
+console.log("ASYNC AWAIT SECTION\n");
 
 
 //async function will always return a promise
